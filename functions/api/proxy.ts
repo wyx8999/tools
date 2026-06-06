@@ -132,7 +132,13 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   if (!env.XIAOYU_API_KEY) {
-    return jsonResponse({ ok: false, status: 500, contentType: 'application/json', data: null, error: '服务端未配置 API 密钥' }, 500);
+    return jsonResponse({
+      ok: false,
+      status: 500,
+      contentType: 'application/json',
+      data: null,
+      error: '服务端未配置 XIAOYU_API_KEY。请在 Cloudflare Pages 的环境变量中添加该变量并重新部署。',
+    }, 500);
   }
 
   let body: ProxyRequestBody;

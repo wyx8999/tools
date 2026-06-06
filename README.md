@@ -34,6 +34,8 @@ XIAOYU_API_KEY=你的apikey
 XIAOYU_API_BASE=https://api.xiaoyu17love.top/API
 ```
 
+如果页面提示 `服务端未配置 XIAOYU_API_KEY`，说明 Cloudflare Pages Function 没有读取到密钥。请在 Cloudflare Pages 控制台进入项目的 `Settings -> Environment variables`，分别在 `Production` 和需要使用的 `Preview` 环境中添加 `XIAOYU_API_KEY`，保存后重新部署。
+
 不要把真实 API 密钥提交到 GitHub。
 
 ## Cloudflare Pages 配置
