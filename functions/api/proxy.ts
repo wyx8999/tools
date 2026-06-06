@@ -12,6 +12,7 @@ interface ToolRoute {
   endpoint: string;
   method: 'GET' | 'POST';
   allowedParams: string[];
+  requiredAll?: string[];
   requiredAny?: string[];
 }
 
@@ -26,13 +27,13 @@ const routes: Record<string, ToolRoute> = {
     endpoint: 'ipxx.php',
     method: 'GET',
     allowedParams: ['ip'],
-    requiredAny: ['ip'],
+    requiredAll: ['ip'],
   },
   oil: {
     endpoint: 'yjcx.php',
     method: 'GET',
     allowedParams: ['city'],
-    requiredAny: ['city'],
+    requiredAll: ['city'],
   },
   daily60s: {
     endpoint: '60s.php',
@@ -48,31 +49,91 @@ const routes: Record<string, ToolRoute> = {
     endpoint: 'jhrs.php',
     method: 'GET',
     allowedParams: ['type', 'backtype'],
-    requiredAny: ['type'],
+    requiredAll: ['type'],
   },
   'text-check': {
     endpoint: 'txtjc.php',
     method: 'GET',
     allowedParams: ['text'],
-    requiredAny: ['text'],
+    requiredAll: ['text'],
   },
   tts: {
     endpoint: 'xytts.php',
     method: 'GET',
     allowedParams: ['type', 'word', 'id'],
-    requiredAny: ['type', 'word'],
+    requiredAll: ['type', 'word'],
   },
   'ai-chat': {
     endpoint: 'aichat.php',
     method: 'GET',
     allowedParams: ['message', 'id', 'system'],
-    requiredAny: ['message'],
+    requiredAll: ['message'],
   },
   'ai-image': {
     endpoint: 'aist.php',
     method: 'GET',
     allowedParams: ['msg', 'style', 'size', 'aibc'],
-    requiredAny: ['msg'],
+    requiredAll: ['msg'],
+  },
+  'qq-info': {
+    endpoint: 'qqcx.php',
+    method: 'GET',
+    allowedParams: ['qq', 'type'],
+    requiredAll: ['qq'],
+  },
+  'icp-record': {
+    endpoint: 'xyicp.php',
+    method: 'GET',
+    allowedParams: ['type', 'data'],
+    requiredAll: ['type', 'data'],
+  },
+  whois: {
+    endpoint: 'ymhs.php',
+    method: 'GET',
+    allowedParams: ['domain'],
+    requiredAll: ['domain'],
+  },
+  'domain-price': {
+    endpoint: 'ymcj.php',
+    method: 'GET',
+    allowedParams: ['domain'],
+    requiredAll: ['domain'],
+  },
+  'site-info': {
+    endpoint: 'wzxx.php',
+    method: 'GET',
+    allowedParams: ['url'],
+    requiredAll: ['url'],
+  },
+  snapshot: {
+    endpoint: 'wykz.php',
+    method: 'GET',
+    allowedParams: ['url', 'ratio'],
+    requiredAll: ['url'],
+  },
+  subdomain: {
+    endpoint: 'domain.php',
+    method: 'GET',
+    allowedParams: ['url'],
+    requiredAll: ['url'],
+  },
+  bilibili: {
+    endpoint: 'bz.php',
+    method: 'GET',
+    allowedParams: ['type', 'url', 'uid'],
+    requiredAll: ['type'],
+  },
+  'netease-music': {
+    endpoint: 'wyydg_new.php',
+    method: 'GET',
+    allowedParams: ['type', 'word', 'id', 'choose', 'order'],
+    requiredAll: ['type'],
+  },
+  'emoji-search': {
+    endpoint: 'bqb.php',
+    method: 'GET',
+    allowedParams: ['word', 'page', 'num'],
+    requiredAll: ['word'],
   },
 };
 
@@ -103,12 +164,16 @@ function cleanParams(input: Record<string, unknown>, allowedParams: string[]) {
   return params;
 }
 
-function hasRequiredParams(params: Record<string, string>, requiredAny?: string[]) {
-  if (!requiredAny || requiredAny.length === 0) {
+function hasRequiredParams(params: Record<string, string>, route: ToolRoute) {
+  if (route.requiredAll?.some((name) => !params[name])) {
+    return false;
+  }
+
+  if (!route.requiredAny || route.requiredAny.length === 0) {
     return true;
   }
 
-  return requiredAny.some((name) => params[name]);
+  return route.requiredAny.some((name) => params[name]);
 }
 
 async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs: number) {
@@ -157,7 +222,7 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
 
   const params = cleanParams(body.params ?? {}, route.allowedParams);
 
-  if (!hasRequiredParams(params, route.requiredAny)) {
+  if (!hasRequiredParams(params, route)) {
     return jsonResponse({ ok: false, status: 400, contentType: 'application/json', data: null, error: '缺少必要参数' }, 400);
   }
 
