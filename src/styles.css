@@ -190,6 +190,17 @@ button {
   color: #f7f3ea;
 }
 
+.hidden-tools-note {
+  background: rgba(178, 103, 61, 0.12);
+  border: 1px solid rgba(178, 103, 61, 0.22);
+  border-radius: 18px;
+  color: #8a3f1e;
+  font-size: 13px;
+  line-height: 1.55;
+  margin-bottom: 14px;
+  padding: 12px;
+}
+
 .tool-list {
   display: grid;
   gap: 10px;
@@ -269,6 +280,17 @@ button {
   color: rgba(21, 32, 51, 0.66);
   line-height: 1.6;
   margin: 0;
+}
+
+.risk-note {
+  background: rgba(178, 103, 61, 0.12);
+  border: 1px solid rgba(178, 103, 61, 0.24);
+  border-radius: 999px;
+  color: #8a3f1e;
+  display: inline-flex;
+  font-size: 13px;
+  margin-top: 10px;
+  padding: 7px 10px;
 }
 
 .tool-form {

@@ -21,6 +21,8 @@ export interface ToolConfig {
   accent: string;
   fields: ToolField[];
   resultHint: string;
+  risk?: 'normal' | 'caution' | 'restricted';
+  hiddenByDefault?: boolean;
 }
 
 export interface ProxyResponse {

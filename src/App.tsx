@@ -40,6 +40,7 @@ function renderResult(result: ProxyResponse | null) {
 }
 
 export default function App() {
+  const showHiddenTools = new URLSearchParams(window.location.search).get('showRestricted') === 'true';
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
   const [query, setQuery] = useState('');
   const [selectedToolId, setSelectedToolId] = useState(tools[0].id);
@@ -52,11 +53,15 @@ export default function App() {
   const filteredTools = useMemo(() => {
     const keyword = query.trim().toLowerCase();
     return tools.filter((tool) => {
+      if (tool.hiddenByDefault && !showHiddenTools) {
+        return false;
+      }
+
       const matchesCategory = activeCategory === 'all' || tool.category === activeCategory;
       const matchesKeyword = !keyword || `${tool.name} ${tool.description}`.toLowerCase().includes(keyword);
       return matchesCategory && matchesKeyword;
     });
-  }, [activeCategory, query]);
+  }, [activeCategory, query, showHiddenTools]);
 
   function selectTool(tool: ToolConfig) {
     setSelectedToolId(tool.id);
@@ -105,7 +110,7 @@ export default function App() {
           <div className="hero-card">
             <span>已接入工具</span>
             <strong>{tools.length}</strong>
-            <p>全部通过后端白名单代理调用，适合上传 GitHub 后部署到 Cloudflare Pages。</p>
+            <p>默认展示适合公开调用的工具。高风险、计费、维护和敏感接口已加入配置，但需要显式开启后才可显示和调用。</p>
           </div>
         </div>
       </section>
@@ -135,6 +140,10 @@ export default function App() {
             ))}
           </div>
 
+          {showHiddenTools ? (
+            <div className="hidden-tools-note">已显示隐藏工具。受限工具仍需后端环境变量允许调用。</div>
+          ) : null}
+
           <div className="tool-list">
             {filteredTools.map((tool) => (
               <button
@@ -159,6 +168,9 @@ export default function App() {
             <div>
               <h2>{selectedTool.name}</h2>
               <p>{selectedTool.description}</p>
+              {selectedTool.risk && selectedTool.risk !== 'normal' ? (
+                <strong className="risk-note">{selectedTool.risk === 'restricted' ? '高风险功能，请谨慎使用。' : '请勿频繁调用，避免触发限速。'}</strong>
+              ) : null}
             </div>
           </div>
 

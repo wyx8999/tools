@@ -1,6 +1,7 @@
 interface Env {
   XIAOYU_API_KEY: string;
   XIAOYU_API_BASE?: string;
+  ENABLE_RESTRICTED_TOOLS?: string;
 }
 
 interface ProxyRequestBody {
@@ -14,6 +15,8 @@ interface ToolRoute {
   allowedParams: string[];
   requiredAll?: string[];
   requiredAny?: string[];
+  restricted?: boolean;
+  bodyMode?: 'query' | 'syai-json';
 }
 
 const routes: Record<string, ToolRoute> = {
@@ -135,6 +138,55 @@ const routes: Record<string, ToolRoute> = {
     allowedParams: ['word', 'page', 'num'],
     requiredAll: ['word'],
   },
+  'phone-status': { endpoint: 'sjhjc.php', method: 'GET', allowedParams: ['num'], requiredAll: ['num'], restricted: true },
+  'lanzou-parse': { endpoint: 'lzy1.php', method: 'GET', allowedParams: ['url', 'pwd', 'type'], requiredAll: ['url'], restricted: true },
+  'zepp-steps': { endpoint: 'shuabu.php', method: 'GET', allowedParams: ['user', 'pwd', 'num'], requiredAll: ['user', 'pwd', 'num'], restricted: true },
+  'image-review': { endpoint: 'tpjh.php', method: 'GET', allowedParams: ['url', 'data', 'type', 'task_id'], requiredAny: ['url', 'data', 'task_id'] },
+  'domain-check': { endpoint: 'ymjj.php', method: 'GET', allowedParams: ['url'], requiredAll: ['url'] },
+  'watermark-remove': { endpoint: 'qsy.php', method: 'GET', allowedParams: ['type', 'url'], requiredAll: ['type', 'url'], restricted: true },
+  'emoji-maker': { endpoint: 'bqbjh.php', method: 'GET', allowedParams: ['type', 'word', 'key', 'urls', 'qqs', 'texts'], requiredAll: ['type'], restricted: true },
+  'smtp-send': { endpoint: 'smtp.php', method: 'GET', allowedParams: ['smtp', 'port', 'user', 'pwd', 'to', 'title', 'sendname', 'sendcontent', 'content_type'], requiredAll: ['smtp', 'user', 'pwd', 'to', 'title', 'sendname', 'sendcontent'], restricted: true },
+  'advanced-ai': { endpoint: 'syai.php', method: 'POST', allowedParams: ['model', 'system', 'message', 'temperature'], requiredAll: ['message'], restricted: true, bodyMode: 'syai-json' },
+  miyoushe: { endpoint: 'mys.php', method: 'GET', allowedParams: ['type', 'keyword', 'uid'], requiredAll: ['type'], restricted: true },
+  'lol-record': { endpoint: 'yxlm.php', method: 'GET', allowedParams: ['type', 'word', 'id', 'scene'], requiredAll: ['type'], restricted: true },
+  'valorant-record': { endpoint: 'wwqy.php', method: 'GET', allowedParams: ['type', 'word', 'id'], requiredAll: ['type'], restricted: true },
+  'peace-record': { endpoint: 'hpyd.php', method: 'GET', allowedParams: ['type', 'word', 'id', 'roleid'], requiredAll: ['type'], restricted: true },
+  'wz-record': { endpoint: 'wzyd.php', method: 'GET', allowedParams: ['type', 'word', 'id', 'roleId', 'heroid', 'name', 'gameseq', 'num', 'backtype'], requiredAll: ['type'], restricted: true },
+  'uin-to-uid': { endpoint: 'uintoid.php', method: 'GET', allowedParams: ['qq'], requiredAll: ['qq'], restricted: true },
+  'port-scan': { endpoint: 'ddsm.php', method: 'GET', allowedParams: ['ip'], requiredAll: ['ip'], restricted: true },
+  'qq-group': { endpoint: 'qun.php', method: 'GET', allowedParams: ['num'], requiredAll: ['num'], restricted: true },
+  'idc-search': { endpoint: 'idcjk.php', method: 'GET', allowedParams: ['type', 'word', 'domain'], requiredAll: ['type'] },
+  'text-image': { endpoint: 'wzzt.php', method: 'GET', allowedParams: ['text', 'img', 'imgmode', 'imgtds', 'txtm', 'color', 'srgb', 'ergb', 'imgm', 'imgbm', 'txtl'], requiredAll: ['text'] },
+  'king-power': { endpoint: 'wzzl.php', method: 'GET', allowedParams: ['name', 'pingtai'], requiredAll: ['name', 'pingtai'] },
+  'llm-sign': { endpoint: 'llm.php', method: 'GET', allowedParams: ['type', 'qq', 'title'], requiredAll: ['type', 'qq'], restricted: true },
+  pixiv: { endpoint: 'pz.php', method: 'GET', allowedParams: ['type', 'word'], requiredAll: ['type'] },
+  'kugou-music': { endpoint: 'kgdg.php', method: 'GET', allowedParams: ['type', 'word', 'choose'], requiredAll: ['type', 'word'] },
+  'ai-draw': { endpoint: 'aiht.php', method: 'GET', allowedParams: ['word', 'img1', 'img2'], requiredAll: ['word'] },
+  'video-parse': { endpoint: 'spjx.php', method: 'GET', allowedParams: ['url'], requiredAll: ['url'], restricted: true },
+  'international-express': { endpoint: 'kdcx.php', method: 'GET', allowedParams: ['number'], requiredAll: ['number'] },
+  'ip-clean': { endpoint: 'ipcjd.php', method: 'GET', allowedParams: ['ip'], requiredAll: ['ip'] },
+  seo: { endpoint: 'seo.php', method: 'GET', allowedParams: ['url'], requiredAll: ['url'] },
+  'parse-query': { endpoint: 'yycx.php', method: 'GET', allowedParams: ['url'], requiredAll: ['url'] },
+  'qq-music': { endpoint: 'qwdg.php', method: 'GET', allowedParams: ['type', 'word', 'choose', 'id'], requiredAll: ['type'] },
+  'icp-domain': { endpoint: 'icp.php', method: 'GET', allowedParams: ['domain'], requiredAll: ['domain'] },
+  ping: { endpoint: 'ping.php', method: 'GET', allowedParams: ['url'], requiredAll: ['url'] },
+  'random-4399': { endpoint: '4399xh.php', method: 'GET', allowedParams: [], restricted: true },
+  'random-mihoyo-cos': { endpoint: 'cpt.php', method: 'GET', allowedParams: ['type'] },
+  'random-anime-image': { endpoint: 'sjdmt.php', method: 'GET', allowedParams: ['type'] },
+  'anime-quote': { endpoint: 'dmyy.php', method: 'GET', allowedParams: ['type'] },
+  'random-cat-meme': { endpoint: 'hm.php', method: 'GET', allowedParams: ['type'] },
+  'random-wsm': { endpoint: 'wsm.php', method: 'GET', allowedParams: ['type'] },
+  'random-cheshire': { endpoint: 'cd.php', method: 'GET', allowedParams: ['type'] },
+  'random-doro': { endpoint: 'doro.php', method: 'GET', allowedParams: ['type'] },
+  'random-cos': { endpoint: 'cp.php', method: 'GET', allowedParams: ['type'] },
+  'ip-basic': { endpoint: 'ip.php', method: 'GET', allowedParams: ['ip'], requiredAll: ['ip'] },
+  'get-rkey': { endpoint: 'get_rkey.php', method: 'GET', allowedParams: [], restricted: true },
+  'image-to-png': { endpoint: 'pic.php', method: 'GET', allowedParams: ['url'], requiredAll: ['url'], restricted: true },
+  'itdog-ping': { endpoint: 'itping.php', method: 'GET', allowedParams: ['url'], requiredAll: ['url'], restricted: true },
+  'indexed-query': { endpoint: 'slcx.php', method: 'GET', allowedParams: ['word'], requiredAll: ['word'], restricted: true },
+  'old-netease-music': { endpoint: 'wyydg.php', method: 'GET', allowedParams: ['type', 'word', 'choose', 'id'], requiredAll: ['type'], restricted: true },
+  'qq-card-sign': { endpoint: 'qqkq.php', method: 'GET', allowedParams: ['title', 'desc', 'prompt', 'url', 'pic', 'i'], requiredAll: ['title', 'desc', 'pic'], restricted: true },
+  qqsgk: { endpoint: 'qqsgk.php', method: 'GET', allowedParams: ['type', 'qq', 'points'], requiredAll: ['qq'], restricted: true },
 };
 
 const jsonHeaders = {
@@ -220,6 +272,10 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
     return jsonResponse({ ok: false, status: 404, contentType: 'application/json', data: null, error: '工具不存在或未开放' }, 404);
   }
 
+  if (route.restricted && env.ENABLE_RESTRICTED_TOOLS !== 'true') {
+    return jsonResponse({ ok: false, status: 403, contentType: 'application/json', data: null, error: '该工具属于高风险、计费、维护或敏感接口，默认不允许公开调用。' }, 403);
+  }
+
   const params = cleanParams(body.params ?? {}, route.allowedParams);
 
   if (!hasRequiredParams(params, route)) {
@@ -228,14 +284,36 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
 
   const base = (env.XIAOYU_API_BASE || 'https://api.xiaoyu17love.top/API').replace(/\/$/, '');
   const url = new URL(`${base}/${route.endpoint}`);
-  url.searchParams.set('apikey', env.XIAOYU_API_KEY);
+  let upstreamInit: RequestInit = { method: route.method };
 
-  for (const [key, value] of Object.entries(params)) {
-    url.searchParams.set(key, value);
+  if (route.bodyMode === 'syai-json') {
+    const messages = [
+      { role: 'system', content: params.system || '你是一个有帮助的助手。' },
+      { role: 'user', content: params.message },
+    ];
+
+    upstreamInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: env.XIAOYU_API_KEY,
+      },
+      body: JSON.stringify({
+        model: params.model || undefined,
+        messages,
+        temperature: params.temperature ? Number(params.temperature) : 0.7,
+      }),
+    };
+  } else {
+    url.searchParams.set('apikey', env.XIAOYU_API_KEY);
+
+    for (const [key, value] of Object.entries(params)) {
+      url.searchParams.set(key, value);
+    }
   }
 
   try {
-    const upstream = await fetchWithTimeout(url.toString(), { method: route.method }, 18000);
+    const upstream = await fetchWithTimeout(url.toString(), upstreamInit, 18000);
     const contentType = upstream.headers.get('content-type') || 'text/plain';
 
     if (contentType.startsWith('image/')) {
