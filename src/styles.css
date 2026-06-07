@@ -5,11 +5,15 @@
 :root {
   color: #152033;
   background: #f7f3ea;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+  font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -27,6 +31,55 @@ textarea {
 
 button {
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(21, 32, 51, 0.15);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(21, 32, 51, 0.28);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.85; }
+}
+
+.spinner {
+  animation: spin 0.8s linear infinite;
 }
 
 .hero-section {
@@ -50,7 +103,12 @@ button {
   display: grid;
   height: 44px;
   place-items: center;
+  transition: transform 0.25s ease;
   width: 44px;
+}
+
+.brand-mark:hover {
+  transform: rotate(-6deg) scale(1.08);
 }
 
 .hero-grid {
@@ -86,6 +144,11 @@ button {
   letter-spacing: 0.12em;
   padding: 8px 12px;
   text-transform: uppercase;
+  transition: background 0.2s ease;
+}
+
+.eyebrow:hover {
+  background: #c5ead8;
 }
 
 .hero-card {
@@ -96,6 +159,12 @@ button {
   color: #f7f3ea;
   min-height: 290px;
   padding: 28px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-card:hover {
+  box-shadow: 0 28px 80px rgba(21, 32, 51, 0.2);
+  transform: translateY(-4px);
 }
 
 .hero-card span {
@@ -130,6 +199,11 @@ button {
   border: 1px solid rgba(21, 32, 51, 0.1);
   border-radius: 30px;
   box-shadow: 0 22px 70px rgba(21, 32, 51, 0.09);
+  transition: box-shadow 0.3s ease;
+}
+
+.runner-card:hover {
+  box-shadow: 0 26px 76px rgba(21, 32, 51, 0.12);
 }
 
 .tool-panel {
@@ -139,6 +213,51 @@ button {
   top: 18px;
 }
 
+.tool-panel-toggle {
+  align-items: center;
+  background: #152033;
+  border: 0;
+  border-radius: 18px;
+  color: #f7f3ea;
+  display: none;
+  font-size: 14px;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  transition: transform 0.15s ease;
+  width: 100%;
+}
+
+.tool-panel-toggle:active {
+  transform: scale(0.97);
+}
+
+.tool-panel-body.collapsed {
+  display: none;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box::before {
+  color: rgba(21, 32, 51, 0.3);
+  content: '⌕';
+  font-size: 18px;
+  font-weight: 300;
+  left: 14px;
+  pointer-events: none;
+  position: absolute;
+  top: 36px;
+  transition: color 0.2s ease;
+}
+
+.search-box:focus-within::before {
+  color: #b2673d;
+}
+
 .search-box label,
 .field span {
   color: rgba(21, 32, 51, 0.68);
@@ -146,6 +265,10 @@ button {
   font-size: 13px;
   font-weight: 800;
   margin-bottom: 8px;
+}
+
+.search-box input {
+  padding-left: 38px;
 }
 
 .search-box input,
@@ -158,7 +281,7 @@ button {
   color: #152033;
   outline: none;
   padding: 13px 14px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
   width: 100%;
 }
 
@@ -183,11 +306,27 @@ button {
   border-radius: 999px;
   color: rgba(21, 32, 51, 0.74);
   padding: 9px 12px;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.category-list button:hover {
+  background: #f0ebe0;
+  border-color: rgba(21, 32, 51, 0.18);
+  transform: translateY(-1px);
+}
+
+.category-list button:active {
+  transform: scale(0.96);
 }
 
 .category-list button.active {
   background: #152033;
   color: #f7f3ea;
+}
+
+.category-list button.active:hover {
+  background: #1e2d47;
+  transform: none;
 }
 
 .hidden-tools-note {
@@ -204,6 +343,9 @@ button {
 .tool-list {
   display: grid;
   gap: 10px;
+  max-height: calc(100vh - 340px);
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .tool-item {
@@ -215,19 +357,44 @@ button {
   gap: 12px;
   grid-template-columns: 54px 1fr;
   padding: 12px;
+  position: relative;
   text-align: left;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
 }
 
-.tool-item.selected,
 .tool-item:hover {
   background: #fffdf8;
   border-color: rgba(21, 32, 51, 0.1);
+  box-shadow: 0 2px 12px rgba(21, 32, 51, 0.06);
+  transform: translateX(4px);
+}
+
+.tool-item.selected {
+  background: #fffdf8;
+  border-color: rgba(21, 32, 51, 0.1);
+  box-shadow: 0 2px 16px rgba(21, 32, 51, 0.08);
+}
+
+.tool-item.selected::before {
+  background: #b2673d;
+  border-radius: 0 4px 4px 0;
+  bottom: 16px;
+  content: '';
+  left: -1px;
+  position: absolute;
+  top: 16px;
+  width: 3px;
 }
 
 .tool-item strong {
   display: block;
   margin-bottom: 4px;
+  transition: color 0.15s ease;
+}
+
+.tool-item.selected strong {
+  color: #b2673d;
 }
 
 .tool-item small {
@@ -248,7 +415,12 @@ button {
   font-weight: 900;
   height: 54px;
   place-items: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   width: 54px;
+}
+
+.tool-item:hover .tool-icon {
+  transform: scale(1.08);
 }
 
 .tool-icon.large {
@@ -256,6 +428,10 @@ button {
   font-size: 16px;
   height: 72px;
   width: 72px;
+}
+
+.tool-icon.large:hover {
+  transform: none;
 }
 
 .runner-card {
@@ -323,18 +499,34 @@ button {
 }
 
 .form-footer button {
+  align-items: center;
   background: #152033;
   border: 0;
   border-radius: 18px;
   color: #f7f3ea;
+  display: inline-flex;
   font-weight: 900;
+  gap: 8px;
+  justify-content: center;
   min-width: 130px;
   padding: 14px 20px;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.form-footer button:hover:not(:disabled) {
+  background: #1e2d47;
+  box-shadow: 0 4px 18px rgba(21, 32, 51, 0.25);
+  transform: translateY(-1px);
+}
+
+.form-footer button:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .form-footer button:disabled {
+  animation: pulse 1.8s ease-in-out infinite;
   cursor: wait;
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
 .result-card {
@@ -373,8 +565,14 @@ button {
   align-items: center;
   color: rgba(248, 250, 252, 0.58);
   display: grid;
+  gap: 10px;
   place-items: center;
   text-align: center;
+}
+
+.empty-state-icon {
+  color: rgba(248, 250, 252, 0.25);
+  margin-bottom: 4px;
 }
 
 .result-error {
@@ -382,6 +580,12 @@ button {
   display: grid;
   gap: 8px;
   place-content: center;
+  place-items: center;
+}
+
+.result-error-icon {
+  color: #fca5a5;
+  margin-bottom: 4px;
 }
 
 .result-pre {
@@ -389,6 +593,7 @@ button {
   line-height: 1.65;
   max-height: 560px;
   overflow: auto;
+  position: relative;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -401,6 +606,37 @@ button {
   width: 100%;
 }
 
+.copy-btn {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: rgba(248, 250, 252, 0.7);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 6px;
+  padding: 8px 14px;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #f8fafc;
+}
+
+.copy-btn:active {
+  transform: scale(0.95);
+}
+
+.result-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
 @media (max-width: 940px) {
   .hero-grid,
   .workspace {
@@ -409,6 +645,14 @@ button {
 
   .tool-panel {
     position: static;
+  }
+
+  .tool-panel-toggle {
+    display: flex;
+  }
+
+  .tool-list {
+    max-height: none;
   }
 }
 
