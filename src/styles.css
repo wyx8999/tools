@@ -234,10 +234,6 @@ button {
   transform: scale(0.97);
 }
 
-.tool-panel-body.collapsed {
-  display: none;
-}
-
 .search-box {
   position: relative;
 }
@@ -653,6 +649,10 @@ button {
 
   .tool-list {
     max-height: none;
+  }
+
+  .tool-panel-body.collapsed {
+    display: none;
   }
 }
 
