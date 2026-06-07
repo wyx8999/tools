@@ -154,8 +154,8 @@ export default function App() {
         <div className="hero-grid">
           <motion.div className="hero-copy" variants={stagger} initial="initial" animate="animate">
             <motion.span className="eyebrow" variants={fadeInUp}>Cloudflare Pages Ready</motion.span>
-            <motion.h1 variants={fadeInUp}>把常用 API 做成一个干净、好用、可部署的工具站。</motion.h1>
-            <motion.p variants={fadeInUp}>首版聚合天气、IP、油价、热榜、内容生成、TTS 和 AI 工具。API 密钥只在 Cloudflare Pages Functions 中使用，不暴露给浏览器。</motion.p>
+            <motion.h1 variants={fadeInUp}>一个干净、好用、可部署的工具站。</motion.h1>
+            <motion.p variants={fadeInUp}>聚合天气、IP、油价、热榜、内容生成、TTS 和 AI 工具。</motion.p>
           </motion.div>
           <motion.div
             className="hero-card"
